@@ -45,7 +45,7 @@ import {
 const NAV = [
   ["Courses", "#courses"],
   ["Why us", "#difference"],
-  ["Partners", "#partners"],
+  ["Study Abroad", "#partners"],
   ["Hostels", "#hostels"],
   ["Gallery", "#gallery"],
   ["Visit", "#location"],
@@ -244,20 +244,18 @@ const COURSES = [
   },
 ];
 
-const PARTNERS = [
-  "Middlesex University",
-  "University of Bolton",
-  "Scope Global Skills University",
-  "Lincoln University",
-  "NCSS Education",
-];
-
 const CLOUDINARY_VIDEO_URLS = [
   "https://res.cloudinary.com/dqlgwv2y8/video/upload/v1793708897/IMG_0651_pu9omw.mov",
   "https://res.cloudinary.com/dqlgwv2y8/video/upload/v1793708889/IMG_0650_wxdcee.mov",
   "https://res.cloudinary.com/dqlgwv2y8/video/upload/v1793708876/IMG_0648_ldejli.mov",
   "https://res.cloudinary.com/dqlgwv2y8/video/upload/v1793708869/IMG_0649_mbfki4.mov",
   "https://res.cloudinary.com/dqlgwv2y8/video/upload/v1793708797/IMG_0647_kaefhf.mov",
+];
+
+const CAMPUS_SLIDES = [
+  "/images/middlesexuni2.jpeg",
+  "/images/middlesexuni.webp",
+  "/images/middlesexuni3.avif",
 ];
 
 const VIDEO_TESTIMONIALS = [1, 2, 3, 4, 5].map((number) => ({
@@ -330,37 +328,37 @@ const OFFERS = [
 const GALLERY = [
   {
     icon: Terminal,
-    cap: "Our modern classroom",
+    // cap: "Our modern classroom",
     src: "/images/apb1.png",
     c: "navy",
   },
   {
     icon: Users,
-    cap: "A collaborative learning environment",
+    // cap: "A collaborative learning environment",
     src: "/images/apb2.png",
     c: "red",
   },
   {
     icon: Lock,
-    cap: "Practical technology lab",
+    // cap: "Practical technology lab",
     src: "/images/apb3.png",
     c: "yellow",
   },
   {
     icon: Layers,
-    cap: "Our focused training space",
+    // cap: "Our focused training space",
     src: "/images/apb4.png",
     c: "navy",
   },
   {
     icon: Laptop,
-    cap: "Students learning together",
+    // cap: "Students learning together",
     src: "/images/apb5.png",
     c: "red",
   },
   {
     icon: Camera,
-    cap: "Life at Aptech Bodija",
+    // cap: "Life at Aptech Bodija",
     src: "/images/apb6.png",
     c: "yellow",
   },
@@ -954,9 +952,10 @@ function VideoTestimonials() {
               {video.src ? (
                 <video
                   controls
+                  playsInline
                   preload="metadata"
                   src={video.src}
-                  // aria-label={video.title}
+                  aria-label={video.title}
                 />
               ) : (
                 <div className="video-placeholder">
@@ -1145,26 +1144,91 @@ function Hostels() {
 }
 
 function Partners() {
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    if (
+      isPaused ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+    const timer = setInterval(
+      () => setActiveSlide((current) => (current + 1) % CAMPUS_SLIDES.length),
+      5000,
+    );
+    return () => clearInterval(timer);
+  }, [isPaused]);
+
   return (
     <section id="partners" className="sec partners-section">
-      <div className="wrap partners-layout">
-        <div>
-          <p className="eyebrow">Your next opportunity</p>
-          <h2 className="h2">Train here. Continue abroad.</h2>
-        </div>
-        <div>
-          <p className="sub">
-            After completing a career course at Aptech Bodija, eligible students
-            can access scholarship and progression opportunities through our
-            education partners.
-          </p>
-          <div className="partner-list">
-            {PARTNERS.map((partner, i) => (
-              <div className="partner" key={partner}>
-                <span>0{i + 1}</span>
-                <strong>{partner}</strong>
-                <ArrowRight size={17} />
-              </div>
+      <div className="wrap">
+        <div
+          className="partner-banner"
+          role="region"
+          aria-label="Middlesex University campus photos"
+          aria-roledescription="carousel"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onFocus={() => setIsPaused(true)}
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) {
+              setIsPaused(false);
+            }
+          }}
+        >
+          <div className="partner-banner-slides">
+            {CAMPUS_SLIDES.map((src, index) => (
+              <img
+                key={src}
+                className={`partner-banner-image${index === activeSlide ? " is-active" : ""}`}
+                src={src}
+                alt="Middlesex University campus"
+                aria-hidden={index !== activeSlide}
+                loading="eager"
+              />
+            ))}
+          </div>
+          <div className="partner-banner-shade" />
+          <div className="partner-banner-copy">
+            <p className="partner-banner-kicker">Your next opportunity</p>
+            <h2>Train here. Continue abroad.</h2>
+            <p>
+              Build your foundation at Aptech Bodija, then explore eligible
+              progression and scholarship opportunities with Middlesex
+              University.
+            </p>
+            <a
+              className="btn btn-yellow"
+              href="https://www.mdx.ac.uk/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Discover Middlesex University <ArrowRight size={18} />
+            </a>
+          </div>
+          <div className="partner-banner-brand">
+            <img
+              src="/images/middlesexuniversitylogo.avif"
+              alt="Middlesex University"
+              loading="lazy"
+            />
+            <span>Make your next move count.</span>
+          </div>
+          <div
+            className="partner-banner-dots"
+            aria-label="Choose a campus photo"
+          >
+            {CAMPUS_SLIDES.map((src, index) => (
+              <button
+                key={src}
+                type="button"
+                className={index === activeSlide ? "is-active" : ""}
+                aria-label={`Show campus photo ${index + 1}`}
+                aria-pressed={index === activeSlide}
+                onClick={() => setActiveSlide(index)}
+              />
             ))}
           </div>
         </div>
