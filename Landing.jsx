@@ -245,6 +245,7 @@ const COURSES = [
 ];
 
 const CLOUDINARY_VIDEO_URLS = [
+  "https://res.cloudinary.com/dqlgwv2y8/video/upload/f_mp4,vc_h264/v1794228504/9144bd37307c43cdb5228253efe4e735_u96qan.mp4",
   "https://res.cloudinary.com/dqlgwv2y8/video/upload/v1793708897/IMG_0651_pu9omw.mov",
   "https://res.cloudinary.com/dqlgwv2y8/video/upload/v1793708889/IMG_0650_wxdcee.mov",
   "https://res.cloudinary.com/dqlgwv2y8/video/upload/v1793708876/IMG_0648_ldejli.mov",
@@ -258,8 +259,9 @@ const CAMPUS_SLIDES = [
   "/images/middlesexuni3.avif",
 ];
 
-const VIDEO_TESTIMONIALS = [1, 2, 3, 4, 5].map((number) => ({
+const VIDEO_TESTIMONIALS = [1, 2, 3, 4, 5, 6].map((number) => ({
   title: [
+    "A new career in tech",
     "From learner to professional",
     "What I built at Aptech",
     "Why I chose Aptech Bodija",
@@ -268,6 +270,7 @@ const VIDEO_TESTIMONIALS = [1, 2, 3, 4, 5].map((number) => ({
     "A word from our students",
   ][number - 1],
   course: [
+    "Web development testimonial",
     "Career course testimonial",
     "Student project story",
     "Student experience",
